@@ -21,12 +21,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    //不生成so文件，这样使用
+    //项目中不生成so文件，这样使用，lib下不需要配置so文件
+    //每次编译用本地ndk生成so文件,打入apk,本地要下载ndk
    /* externalNativeBuild {
         ndkBuild {
             path file('src/main/jni/Android.mk')
         }
     }*/
+    //这样配置，lib下要有so文件，指明lib下so文件打入apk包，本地没有ndk也是可以的
+    //别人已经用ndk编译后的so文件提供给你了
     sourceSets.main {
         jniLibs.srcDirs = ['libs']
     }
