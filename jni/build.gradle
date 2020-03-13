@@ -23,16 +23,16 @@ android {
     }
     //项目中不生成so文件，这样使用，lib下不需要配置so文件
     //每次编译用本地ndk生成so文件,打入apk,本地要下载ndk
-   /* externalNativeBuild {
+    externalNativeBuild {
         ndkBuild {
             path file('src/main/jni/Android.mk')
         }
-    }*/
+    }
     //这样配置，lib下要有so文件，指明lib下so文件打入apk包，本地没有ndk也是可以的
     //别人已经用ndk编译后的so文件提供给你了
-    sourceSets.main {
+    /*sourceSets.main {
         jniLibs.srcDirs = ['libs']
-    }
+    }*/
 }
 
 dependencies {
@@ -43,3 +43,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+//生成jar包的配置    在命令行输入 gradlew makeJar
+task makeJar(type: Copy) {//本代码中 makeJar为自定义方法名
+    delete 'build/outputs/test.jar'
+    from('build/intermediates/packaged-classes/release/') //jar文件来源
+    into('build/libs/') //生成路径
+    include('classes.jar')
+    rename('classes.jar', 'test.jar') //命名为network.jar
+}
+makeJar.dependsOn(build)
